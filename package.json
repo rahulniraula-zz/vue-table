@@ -1,0 +1,19 @@
+{
+  "name": "vue-table-component",
+  "version": "1.0.0",
+  "description": "Table Component for vue js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue",
+    "table"
+  ],
+  "author": "rahul.niraula@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "vuejs-paginate": "^2.1.0"
+  }
+}
