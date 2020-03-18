@@ -1,7 +1,7 @@
 # Vue JS Datatable component.
 * Table Component for Vue js supporting server and client slide rendering with pagination and sorting
 * If URL is supplied as a prop, then the data is fetched from the url. Receives data as props too.
-
+# Documentation is still in progress. Contribution is welcome
 # Usage
 import `vue-table` from "geeklearners-vue-table";
 register the component 
@@ -28,6 +28,6 @@ register the component
             :url="url"
           >
         </v-table>
+```
 
-
-# Documentation is not complete. 
+. 
