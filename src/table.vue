@@ -125,7 +125,12 @@ export default {
     additionalColumnsTransformer: Function, //The function which transfoms values for additional columns
     except: Array, // and array of columns excluded from displaying
     url: String, // the url which is used for fetching data from the server
-    paginate: Object, // Pagiantion option for local data //TODO
+    paginate: {
+      type:Object,
+      default:function(){
+        return {enable:false}
+      }
+    }, // Pagiantion option for local data //TODO
     perPage: {
       type: Number,
       default: 10
@@ -215,7 +220,7 @@ export default {
      * Transforms the heading value before displaying it
      */
     getHeadingTransformedValue(val) {
-      return this.$props.headingTransformer(val);
+      return this.$props.headingTransformer?this.$props.headingTransformer(val):val;
     },
     /**
      * Check wether html listing of column is enabled
