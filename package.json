@@ -1,6 +1,6 @@
 {
   "name": "geeklearners-vue-table",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Table Component for vue js",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rahulniraula/vuejs-table.git"
+    "url": "git+https://github.com/rahulniraula/vue-table.git"
   },
   "bugs": {
     "url": "https://github.com/rahulniraula/vue-table/issues"
