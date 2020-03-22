@@ -60,8 +60,20 @@
           {{getHeadingTransformedValue(column)}}
         </th>
       </tr>
-      <tr v-for="item in internalItems">
-        <td v-for="column in _cols" v-html="isHtmlValid(item,column)">{{getValue(item,column)}}</td>
+      <tr v-for="(item,i) in internalItems" :key="'item_'+i">
+        <td v-for="(column,i) in _cols" :key="'column_'+i">
+          <template v-if="isHtmlValid(item,column)">
+            <span
+              v-for="(i,j) in getValue(item,column)"
+              v-html="i.item"
+              @click="i.handler(i.type)"
+              :key="'ind_'+j"
+            ></span>
+          </template>
+          <template v-else>
+            <span>{{getValue(item,column)}}</span>
+          </template>
+        </td>
       </tr>
     </table>
 
@@ -224,12 +236,10 @@ export default {
      */
     isHtmlValid(item, column) {
       if (this.$props.html) {
-        return this.$props.html.indexOf(column) !== -1
-          ? this.getValue(item, column)
-          : this.getValue(item, column);
+        return this.$props.html.indexOf(column) !== -1 ? true : false;
         //TODO selectively enable and disable html escaping according to `html` props value
       }
-      return this.getValue(item, column);
+      return false;
     },
     /**
      * Gets the value for the column optionallly
