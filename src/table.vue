@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- perform server side search if url is passed as prop -->
-    <div class="btn-group pull-right" style="margin-bottom:5px" v-if="url">
+    <div class="btn-group float-right" style="margin-bottom:5px" v-if="url">
       <input
         type="text"
-        class="pull-right form-control"
+        class="float-right form-control"
         style="margin:0px"
         placeholder="Search"
         v-model="query"
@@ -14,10 +14,10 @@
     </div>
     <!-- end of server side search -->
     <!-- local search enable for less data  -->
-    <div class="btn-group pull-right" style="margin-bottom:5px" v-else>
+    <div class="btn-group float-right" style="margin-bottom:5px" v-else>
       <input
         type="text"
-        class="pull-right form-control"
+        class="float-right form-control"
         style="margin:0px"
         placeholder="Search"
         v-model="query"
@@ -81,7 +81,7 @@
     as prop to the component-->
     <paginate
       v-if="dataFromServer['last_page']"
-      class="pull-right"
+      class="float-right"
       :pageCount="dataFromServer['last_page']"
       :containerClass="'pagination'"
       :pageLinkClass="'page-link'"
@@ -100,7 +100,7 @@
     <paginate
       v-if="paginate.enable"
       :pageLinkClass="'page-link'"
-      class="pull-right"
+      class="float-right"
       :containerClass="'pagination'"
       :pageClass="'page-item'"
       v-model="currentPage"
@@ -138,9 +138,9 @@ export default {
     except: Array, // and array of columns excluded from displaying
     url: String, // the url which is used for fetching data from the server
     paginate: {
-      type:Object,
-      default:function(){
-        return {enable:false}
+      type: Object,
+      default: function() {
+        return { enable: false };
       }
     }, // Pagiantion option for local data //TODO
     perPage: {
@@ -232,7 +232,9 @@ export default {
      * Transforms the heading value before displaying it
      */
     getHeadingTransformedValue(val) {
-      return this.$props.headingTransformer?this.$props.headingTransformer(val):val;
+      return this.$props.headingTransformer
+        ? this.$props.headingTransformer(val)
+        : val;
     },
     /**
      * Check wether html listing of column is enabled
