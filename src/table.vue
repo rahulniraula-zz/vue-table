@@ -1,115 +1,122 @@
 <template>
   <div>
-    <!-- perform server side search if url is passed as prop -->
-    <div class="btn-group float-right" style="margin-bottom:5px" v-if="url">
-      <input
-        type="text"
-        class="float-right form-control"
-        style="margin:0px"
-        placeholder="Search"
-        v-model="query"
-        @keyup.enter="performSearch"
-      />
-      <span class="fa fa-search btn btn-success" style="cursor:pointer" @click="performSearch"></span>
-    </div>
-    <!-- end of server side search -->
-    <!-- local search enable for less data  -->
-    <div class="btn-group float-right" style="margin-bottom:5px" v-else>
-      <input
-        type="text"
-        class="float-right form-control"
-        style="margin:0px"
-        placeholder="Search"
-        v-model="query"
-        @keyup="performLocalSearch"
-      />
-      <span class="fa fa-search btn btn-success" style="cursor:pointer" @click="performLocalSearch"></span>
-    </div>
-    <!-- End of local side search UI -->
-    <table class="table table-bordered">
-      <!-- Enable column wise search
+    <div v-if="_cols.length>0">
+      <!-- perform server side search if url is passed as prop -->
+      <div class="btn-group float-right" style="margin-bottom:5px" v-if="url">
+        <input
+          type="text"
+          class="float-right form-control"
+          style="margin:0px"
+          placeholder="Search"
+          v-model="query"
+          @keyup.enter="performSearch"
+        />
+        <span class="fa fa-search btn btn-success" style="cursor:pointer" @click="performSearch"></span>
+      </div>
+      <!-- end of server side search -->
+      <!-- local search enable for less data  -->
+      <div class="btn-group float-right" style="margin-bottom:5px" v-else>
+        <input
+          type="text"
+          class="float-right form-control"
+          style="margin:0px"
+          placeholder="Search"
+          v-model="query"
+          @keyup="performLocalSearch"
+        />
+        <span
+          class="fa fa-search btn btn-success"
+          style="cursor:pointer"
+          @click="performLocalSearch"
+        ></span>
+      </div>
+      <!-- End of local side search UI -->
+      <table class="table table-bordered">
+        <!-- Enable column wise search
         Currently done for local data
         TODO
-      -->
-      <tr v-if="false">
-        <td v-for="column in _cols" :key="column">
-          <input
-            type="text"
-            class="form-control"
-            v-if="Object.keys(localQuery).length>0"
-            :placeholder="'Search By '+column"
-            v-model="localQuery[column]"
-            @keyup="performLocalSearch"
-          />
-        </td>
-      </tr>
-      <!-- Column wise search end portion
-      TODO-->
+        -->
+        <tr v-if="false">
+          <td v-for="column in _cols" :key="column">
+            <input
+              type="text"
+              class="form-control"
+              v-if="Object.keys(localQuery).length>0"
+              :placeholder="'Search By '+column"
+              v-model="localQuery[column]"
+              @keyup="performLocalSearch"
+            />
+          </td>
+        </tr>
+        <!-- Column wise search end portion
+        TODO-->
 
-      <!-- Column Heading portion
-      Contains click handler as well which sorts the data-->
-      <tr>
-        <th
-          v-for="column in _cols"
-          :key="column"
-          @click="headingClicked(column)"
-          style="cursor:pointer"
-          :title="'Click To Toggle Sorting Order by '+column"
-        >
-          <span :class="sortClass" :style="{display:sortColumn==column?'':'none'}"></span>
-          {{getHeadingTransformedValue(column)}}
-        </th>
-      </tr>
-      <tr v-for="(item,i) in internalItems" :key="'item_'+i">
-        <td v-for="(column,i) in _cols" :key="'column_'+i">
-          <template v-if="isHtmlValid(item,column)">
-            <span
-              v-for="(i,j) in getValue(item,column)"
-              v-html="i.item"
-              @click="i.handler(i.type)"
-              :key="'ind_'+j"
-            ></span>
-          </template>
-          <template v-else>
-            <span>{{getValue(item,column)}}</span>
-          </template>
-        </td>
-      </tr>
-    </table>
+        <!-- Column Heading portion
+        Contains click handler as well which sorts the data-->
+        <tr>
+          <th
+            v-for="column in _cols"
+            :key="column"
+            @click="headingClicked(column)"
+            style="cursor:pointer"
+            :title="'Click To Toggle Sorting Order by '+column"
+          >
+            <span :class="sortClass" :style="{display:sortColumn==column?'':'none'}"></span>
+            {{getHeadingTransformedValue(column)}}
+          </th>
+        </tr>
+        <tr v-for="(item,i) in internalItems" :key="'item_'+i">
+          <td v-for="(column,i) in _cols" :key="'column_'+i">
+            <template v-if="isHtmlValid(item,column)">
+              <span
+                v-for="(i,j) in getValue(item,column)"
+                v-html="i.item"
+                @click="i.handler(i.type)"
+                :key="'ind_'+j"
+              ></span>
+            </template>
+            <template v-else>
+              <span>{{getValue(item,column)}}</span>
+            </template>
+          </td>
+        </tr>
+      </table>
 
-    <!-- Pagination enabled if url is supplied
-    as prop to the component-->
-    <paginate
-      v-if="dataFromServer['last_page']"
-      class="float-right"
-      :pageCount="dataFromServer['last_page']"
-      :containerClass="'pagination'"
-      :pageLinkClass="'page-link'"
-      :margin-pages="2"
-      :pageClass="'page-item'"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
-      prev-link-class="page-link"
-      next-link-class="page-link"
-      :click-handler="paginationClickHandler"
-      v-model="currentPage"
-    ></paginate>
-    <!-- End of server side pagination code  -->
+      <!-- Pagination enabled if url is supplied
+      as prop to the component-->
+      <paginate
+        v-if="dataFromServer['last_page']"
+        class="float-right"
+        :pageCount="dataFromServer['last_page']"
+        :containerClass="'pagination'"
+        :pageLinkClass="'page-link'"
+        :margin-pages="2"
+        :pageClass="'page-item'"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        prev-link-class="page-link"
+        next-link-class="page-link"
+        :click-handler="paginationClickHandler"
+        v-model="currentPage"
+      ></paginate>
+      <!-- End of server side pagination code  -->
 
-    <!-- Local pagination start -->
-    <paginate
-      v-if="paginate.enable"
-      :pageLinkClass="'page-link'"
-      class="float-right"
-      :containerClass="'pagination'"
-      :pageClass="'page-item'"
-      v-model="currentPage"
-      :pageCount="pageCount"
-      prev-link-class="page-link"
-      next-link-class="page-link"
-      :click-handler="localPaginationClickHandler"
-    ></paginate>
-    <!-- end of local pagination  -->
+      <!-- Local pagination start -->
+      <paginate
+        v-if="paginate.enable"
+        :pageLinkClass="'page-link'"
+        class="float-right"
+        :containerClass="'pagination'"
+        :pageClass="'page-item'"
+        v-model="currentPage"
+        :pageCount="pageCount"
+        prev-link-class="page-link"
+        next-link-class="page-link"
+        :click-handler="localPaginationClickHandler"
+      ></paginate>
+      <!-- end of local pagination  -->
+    </div>
+    <div class="alert alert-danger" v-else>No data available</div>
   </div>
 </template>
 <script>
@@ -285,7 +292,7 @@ export default {
       let output = Array.isArray(this.$props.additionalColumns)
         ? [].concat(this.$props.additionalColumns)
         : [];
-      if (this.internalItems.length > 0) {
+      if (this.internalItems && this.internalItems.length > 0) {
         let first_item = this.internalItems[0];
         let headings = Object.keys(first_item);
         if (this.$props.except && Array.isArray(this.$props.except)) {
