@@ -213,7 +213,7 @@ export default {
       })
         .then(r => {
           this.dataFromServer = r.data.data;
-          this.internalItems = r.data.data.data;
+          this.dataFromServer ? (this.internalItems = r.data.data.data) : "";
         })
         .catch();
     },
