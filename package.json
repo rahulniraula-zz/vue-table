@@ -21,6 +21,8 @@
   "author": "rahul.niraula@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+    "@vue/babel-preset-jsx": "^1.1.2",
     "axios": "^0.19.2",
     "vuejs-paginate": "^2.1.0"
   }
