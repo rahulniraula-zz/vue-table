@@ -1,7 +1,6 @@
 <script>
 import axios from "axios";
 export default {
-  components: { A },
   data: function() {
     return {
       sortOrder: -1,
