@@ -262,7 +262,7 @@ export default {
           </div>
         )}
         {this.internalItems.length == 0 ? (
-          <div class="alert alert-warning">No Data available</div>
+          <div class="alert alert-warning text-center">No Data available</div>
         ) : (
           <table class="table table-bordered">
             <tr>
