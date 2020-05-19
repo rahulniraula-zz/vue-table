@@ -53,7 +53,7 @@ By default, the column name is used as it is received from the server. Heading c
 
 e.g. 
 ```js
-<template>>
+<template>
 <v-table :items="items" :headingTransformer="headingTransformer"/>
 </template>
 <script>
@@ -80,7 +80,7 @@ If some additional columns need to be added to the display, they can be added us
 `additionalColumnsTransformer` is a function returning an Object containing column name as key and a callback function returning array of object as the value.
 
 ```js
-<template>>
+<template>
 <v-table :items="items"  :headingTransformer="headingTransformer" :html="html"/>
 </template>
 <script>
