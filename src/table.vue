@@ -30,6 +30,14 @@ export default {
     perPage: {
       type: Number,
       default: 10
+    },
+    tableClass: {
+      type: Object,
+      default: () => {
+        return {
+          table: true
+        };
+      }
     }
   },
   mounted: function() {
@@ -264,7 +272,7 @@ export default {
         {this.internalItems.length == 0 ? (
           <div class="alert alert-warning text-center">No Data available</div>
         ) : (
-          <table class="table table-bordered">
+          <table class={this.$props.tableClass}>
             <tr>
               {this._cols.map(column => {
                 return (
