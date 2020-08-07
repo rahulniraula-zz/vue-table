@@ -1,6 +1,8 @@
 <script>
 import axios from "axios";
+import Paginate from "vuejs-paginate";
 export default {
+  components: { Paginate },
   data: function () {
     return {
       sortOrder: -1,
