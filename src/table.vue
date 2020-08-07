@@ -1,7 +1,7 @@
 <script>
 import axios from "axios";
 export default {
-  data: function() {
+  data: function () {
     return {
       sortOrder: -1,
       sortColumn: null,
@@ -9,7 +9,7 @@ export default {
       dataFromServer: {},
       currentPage: 1,
       query: "", // query parameter for server side searching
-      localQuery: {}
+      localQuery: {},
     };
   },
   props: {
@@ -23,24 +23,24 @@ export default {
     url: String, // the url which is used for fetching data from the server
     paginate: {
       type: Object,
-      default: function() {
+      default: function () {
         return { enable: false };
-      }
+      },
     }, // Pagiantion option for local data //TODO
     perPage: {
       type: Number,
-      default: 10
+      default: 10,
     },
     tableClass: {
       type: Object,
       default: () => {
         return {
-          table: true
+          table: true,
         };
-      }
-    }
+      },
+    },
   },
-  mounted: function() {
+  mounted: function () {
     /**
      * if url is supplied then fetch the data from the url
      * else
@@ -74,7 +74,7 @@ export default {
      * TODO
      */
     performLocalSearch() {
-      this.internalItems = this.items.filter(i => {
+      this.internalItems = this.items.filter((i) => {
         return i.name.indexOf(this.query) != -1;
       });
     },
@@ -94,9 +94,9 @@ export default {
      */
     fetchData(query) {
       axios({
-        url: this.$props.url + query
+        url: this.$props.url + query,
       })
-        .then(r => {
+        .then((r) => {
           this.dataFromServer = r.data.data;
           this.dataFromServer ? (this.internalItems = r.data.data.data) : "";
         })
@@ -165,7 +165,7 @@ export default {
         }
         return obj[col];
       }
-    }
+    },
   },
   computed: {
     /**
@@ -173,7 +173,7 @@ export default {
      * items and the additional items without the items specified in the except array
      * output=normalColumns + additionalColumns - except
      */
-    _cols: function() {
+    _cols: function () {
       let output = Array.isArray(this.$props.additionalColumns)
         ? [].concat(this.$props.additionalColumns)
         : [];
@@ -181,7 +181,7 @@ export default {
         let first_item = this.internalItems[0];
         let headings = Object.keys(first_item);
         if (this.$props.except && Array.isArray(this.$props.except)) {
-          headings = headings.filter(h => {
+          headings = headings.filter((h) => {
             return this.$props.except.indexOf(h) === -1;
           });
         }
@@ -192,9 +192,9 @@ export default {
     /**
      * Returns an array of columns applying headingTransformer function to each heading
      */
-    columns: function() {
+    columns: function () {
       if (typeof this.$props.headingTransformer === "function") {
-        return this._cols.map(h => {
+        return this._cols.map((h) => {
           return this.$props.headingTransformer(h);
         });
       }
@@ -203,35 +203,35 @@ export default {
     /**
      * up and down arrows shown on the heading on each click on the heading
      */
-    sortClass: function() {
+    sortClass: function () {
       return {
         "fa fa-arrow-down": this.sortOrder == -1,
-        "fa fa-arrow-up": this.sortOrder == 1
+        "fa fa-arrow-up": this.sortOrder == 1,
       };
     },
     /**
      * Total page count items used for pagination
      */
-    pageCount: function() {
+    pageCount: function () {
       return Math.ceil(this.internalItems.length / this.$props.perPage);
-    }
+    },
   },
   watch: {
     /**
      * Watch for changes in items and assign them to local varialble
      */
-    items: function(n) {
+    items: function (n) {
       this.internalItems = n;
     },
     /**
      * For column wise local search
      * TODO
      */
-    _cols: function(n) {
-      n.forEach(c => {
+    _cols: function (n) {
+      n.forEach((c) => {
         this.localQuery[c] = "";
       });
-    }
+    },
   },
   render(h) {
     return (
@@ -274,7 +274,7 @@ export default {
         ) : (
           <table class={this.$props.tableClass}>
             <tr>
-              {this._cols.map(column => {
+              {this._cols.map((column) => {
                 return (
                   <th
                     key={column}
@@ -285,7 +285,7 @@ export default {
                     <span
                       class={this.sortClass}
                       style={{
-                        display: this.sortColumn == column ? "" : "none"
+                        display: this.sortColumn == column ? "" : "none",
                       }}
                     ></span>
                     {this.getHeadingTransformedValue(column)}
@@ -322,8 +322,24 @@ export default {
             })}
           </table>
         )}
+        {this.dataFromServer["last_page"] ? (
+          <paginate
+            class="float-right"
+            pageCount={this.dataFromServer["last_page"]}
+            containerClass="pagination"
+            pageLinkClass="page-link"
+            margin-pages={2}
+            pageClass="page-item"
+            prev-text="Prev"
+            next-text="Next"
+            prev-link-class="page-link"
+            next-link-class="page-link"
+            click-handler={this.paginationClickHandler}
+            v-model={this.currentPage}
+          ></paginate>
+        ) : null}
       </div>
     );
-  }
+  },
 };
 </script>
