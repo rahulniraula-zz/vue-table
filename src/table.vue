@@ -13,6 +13,7 @@ export default {
       currentPage: 1,
       query: "", // query parameter for server side searching
       localQuery: {},
+      externalFilter: {},
     };
   },
   props: {
@@ -45,9 +46,13 @@ export default {
   },
   mounted: function () {
     util.event.$on("filter", (obj) => {
-      let s = this.serialize(obj);
-      let q = "?page=" + this.currentPage + "&" + s;
-      this.fetchData(q);
+      this.externalFilter = {
+        ...this.externalFilter,
+        ...obj,
+        page: this.currentPage,
+        q: this.query,
+      };
+      this.fetchData("");
     });
     /**
      * if url is supplied then fetch the data from the url
@@ -74,19 +79,19 @@ export default {
      * Search for data in the server in the given url
      */
     performSearch() {
-      let q = "?page=" + this.currentPage + "&q=" + this.query;
-      this.fetchData(q);
+      // let q = "?page=" + this.currentPage + "&q=" + this.query;
+      this.fetchData();
     },
     /**
      * Handler for server side pagiation
      */
     paginationClickHandler(page) {
-      console.log(this.currentPage);
-      let q = "?page=" + this.currentPage;
-      if (this.query.length > 0) {
-        q += "&q=" + this.query;
-      }
-      this.fetchData(q);
+      this.externalFilter = {
+        ...this.externalFilter,
+        page: this.currentPage,
+        q: this.query,
+      };
+      this.fetchData();
     },
     /**
      * Local Search for items received through items props
@@ -111,9 +116,16 @@ export default {
     /**
      * Fetch the data from the server and set it to internalItems
      */
-    fetchData(query) {
+    fetchData() {
       axios({
-        url: this.$props.url + query,
+        url:
+          this.$props.url +
+          "?" +
+          this.serialize({
+            ...this.externalFilter,
+            q: this.query,
+            page: this.currentPage,
+          }),
       })
         .then((r) => {
           this.dataFromServer = r.data.data;
@@ -364,3 +376,4 @@ export default {
   },
 };
 </script>
+
