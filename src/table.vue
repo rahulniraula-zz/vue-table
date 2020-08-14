@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { util } from "../index.js";
 import Paginate from "vuejs-paginate";
 export default {
   components: { Paginate },
@@ -43,6 +44,11 @@ export default {
     },
   },
   mounted: function () {
+    util.event.$on("filter", (obj) => {
+      let s = this.serialize(obj);
+      let q = "?page=" + this.currentPage + "&" + s;
+      this.fetchData(q);
+    });
     /**
      * if url is supplied then fetch the data from the url
      * else
@@ -56,6 +62,14 @@ export default {
     }
   },
   methods: {
+    serialize(obj) {
+      var str = [];
+      for (var p in obj)
+        if (obj.hasOwnProperty(p)) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+      return str.join("&");
+    },
     /**
      * Search for data in the server in the given url
      */
@@ -69,6 +83,9 @@ export default {
     paginationClickHandler(page) {
       console.log(this.currentPage);
       let q = "?page=" + this.currentPage;
+      if (this.query.length > 0) {
+        q += "&q=" + this.query;
+      }
       this.fetchData(q);
     },
     /**
@@ -272,7 +289,9 @@ export default {
           </div>
         )}
         {this.internalItems.length == 0 ? (
-          <div class="alert alert-warning text-center">No Data available</div>
+          <div class="alert alert-warning text-center" style="clear:both">
+            No Data available
+          </div>
         ) : (
           <table class={this.$props.tableClass}>
             <tr>
