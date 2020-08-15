@@ -54,6 +54,7 @@ export default {
       };
       this.fetchData("");
     });
+    this.$root.$emit("vueTableMounted");
     /**
      * if url is supplied then fetch the data from the url
      * else
@@ -376,4 +377,5 @@ export default {
   },
 };
 </script>
+
 
