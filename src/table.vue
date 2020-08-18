@@ -45,6 +45,8 @@ export default {
     },
   },
   mounted: function () {
+    this.externalFilter = {};
+    util.event.$off("filter");
     util.event.$on("filter", (obj) => {
       this.externalFilter = {
         ...this.externalFilter,
@@ -301,6 +303,11 @@ export default {
             />
           </div>
         )}
+        <div class="btn-group float-left" style="margin-bottom:5px">
+          {this.$scopedSlots.headerLeft
+            ? this.$scopedSlots.headerLeft({ ...this.externalFilter })
+            : null}
+        </div>
         {this.internalItems.length == 0 ? (
           <div class="alert alert-warning text-center" style="clear:both">
             No Data available
