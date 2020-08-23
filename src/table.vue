@@ -17,6 +17,7 @@ export default {
     };
   },
   props: {
+    columnSortOrder: Object,
     items: Array, //Items passed as prop for local side data
     headingTransformer: Function, // the transformer function if data in the heading needs some transformation before rendering
     valueTransformer: Function, // the transformer function if data  needs some transformation before rendering
@@ -219,7 +220,19 @@ export default {
             return this.$props.except.indexOf(h) === -1;
           });
         }
-        return [...headings, ...output];
+        let a = [...headings, ...output];
+        return a.sort((a, b) => {
+          if (this.$props.columnSortOrder) {
+            let index = this.$props.columnSortOrder[a]
+              ? this.$props.columnSortOrder[a]
+              : a.length;
+            let index1 = this.$props.columnSortOrder[b]
+              ? this.$props.columnSortOrder[b]
+              : a.length;
+            return index - index1;
+          }
+          return -1;
+        });
       }
       return output;
     },
@@ -384,5 +397,6 @@ export default {
   },
 };
 </script>
+
 
 
