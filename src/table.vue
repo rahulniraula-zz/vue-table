@@ -231,7 +231,7 @@ export default {
               : a.length;
             return index - index1;
           }
-          return -1;
+          return 1;
         });
       }
       return output;
