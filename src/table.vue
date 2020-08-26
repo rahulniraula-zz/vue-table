@@ -17,6 +17,12 @@ export default {
     };
   },
   props: {
+    params: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
     columnSortOrder: Object,
     items: Array, //Items passed as prop for local side data
     headingTransformer: Function, // the transformer function if data in the heading needs some transformation before rendering
@@ -125,6 +131,9 @@ export default {
         url:
           this.$props.url +
           "?" +
+          (Object.keys(this.$props.params).length > 0
+            ? this.serialize(this.$props.params) + "&"
+            : "") +
           this.serialize({
             ...this.externalFilter,
             q: this.query,
@@ -397,6 +406,7 @@ export default {
   },
 };
 </script>
+
 
 
 
