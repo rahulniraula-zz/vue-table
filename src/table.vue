@@ -325,7 +325,7 @@ export default {
             />
           </div>
         )}
-        <div class="btn-group float-left" style="margin-bottom:5px">
+        <div class="btn-group float-left header-left" style="margin-bottom:5px">
           {this.$scopedSlots.headerLeft
             ? this.$scopedSlots.headerLeft({ ...this.externalFilter })
             : null}
