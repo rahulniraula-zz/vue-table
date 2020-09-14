@@ -336,53 +336,57 @@ export default {
           </div>
         ) : (
           <table class={this.$props.tableClass}>
-            <tr>
-              {this._cols.map((column) => {
+            <thead>
+              <tr>
+                {this._cols.map((column) => {
+                  return (
+                    <th
+                      key={column}
+                      vOn:Click={this.headingClicked.bind(this, column)}
+                      style="cursor:pointer"
+                      title={"Click To Toggle Sorting Order by " + column}
+                    >
+                      <span
+                        class={this.sortClass}
+                        style={{
+                          display: this.sortColumn == column ? "" : "none",
+                        }}
+                      ></span>
+                      {this.getHeadingTransformedValue(column)}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {this.internalItems.map((item, i) => {
                 return (
-                  <th
-                    key={column}
-                    vOn:Click={this.headingClicked.bind(this, column)}
-                    style="cursor:pointer"
-                    title={"Click To Toggle Sorting Order by " + column}
-                  >
-                    <span
-                      class={this.sortClass}
-                      style={{
-                        display: this.sortColumn == column ? "" : "none",
-                      }}
-                    ></span>
-                    {this.getHeadingTransformedValue(column)}
-                  </th>
+                  <tr key={"item_" + i}>
+                    {this._cols.map((column, i) => {
+                      return (
+                        <td key={"column_" + i}>
+                          {this.isHtmlValid(item, column)
+                            ? this.getValue(item, column).map((i, j) => {
+                                if ("comp" in i) {
+                                  return <i.comp {...{ props: i.prop }} />;
+                                } else {
+                                  return (
+                                    <span
+                                      domPropsInnerHTML={i.item}
+                                      vOn:click={i.handler.bind(this, i.type)}
+                                      key={"ind_" + j}
+                                    ></span>
+                                  );
+                                }
+                              })
+                            : this.getValue(item, column)}
+                        </td>
+                      );
+                    })}
+                  </tr>
                 );
               })}
-            </tr>
-            {this.internalItems.map((item, i) => {
-              return (
-                <tr key={"item_" + i}>
-                  {this._cols.map((column, i) => {
-                    return (
-                      <td key={"column_" + i}>
-                        {this.isHtmlValid(item, column)
-                          ? this.getValue(item, column).map((i, j) => {
-                              if ("comp" in i) {
-                                return <i.comp {...{ props: i.prop }} />;
-                              } else {
-                                return (
-                                  <span
-                                    domPropsInnerHTML={i.item}
-                                    vOn:click={i.handler.bind(this, i.type)}
-                                    key={"ind_" + j}
-                                  ></span>
-                                );
-                              }
-                            })
-                          : this.getValue(item, column)}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            </tbody>
           </table>
         )}
         {this.dataFromServer["last_page"] ? (
