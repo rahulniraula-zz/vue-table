@@ -50,6 +50,9 @@ export default {
         };
       },
     },
+    rowCallback: {
+      type: Function,
+    },
   },
   mounted: function () {
     this.externalFilter = {};
@@ -361,7 +364,15 @@ export default {
             <tbody>
               {this.internalItems.map((item, i) => {
                 return (
-                  <tr key={"item_" + i}>
+                  <tr
+                    key={"item_" + i}
+                    class={
+                      this.$props.rowCallback &&
+                      typeof this.$props.rowCallback === "function"
+                        ? this.$props.rowCallback.call(this, item)
+                        : []
+                    }
+                  >
                     {this._cols.map((column, i) => {
                       return (
                         <td key={"column_" + i}>
