@@ -130,7 +130,13 @@ export default {
      * Fetch the data from the server and set it to internalItems
      */
     fetchData() {
-      axios({
+      let token = sessionStorage.getItem("token") || "";
+      const instance = axios.create({
+        headers: {
+          Authorization: `Bearer ${token}`.replace(/"/, ""),
+        },
+      });
+      instance({
         url:
           this.$props.url +
           "?" +
