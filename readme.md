@@ -79,6 +79,14 @@ If some additional columns need to be added to the display, they can be added us
 `additionalColumns` is just an array defining the columns to be added to the table.
 `additionalColumnsTransformer` is a function returning an Object containing column name as key and a callback function returning array of object as the value.
 
+### Sorting Column Order
+`columnSortOrder` Sorts the columns display positioning.
+
+```js
+:columnSortOrder="{name:1,address:2}"
+```
+
+
 ```js
 <template>
 <v-table :items="items"  :headingTransformer="headingTransformer" :html="html"/>
