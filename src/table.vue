@@ -312,10 +312,12 @@ export default {
               vOn:keyup_enter={this.performSearch.bind(this)}
             />
             <span
-              class="fa fa-search btn btn-success"
+              class=" btn btn-success"
               style="cursor:pointer"
               vOn:click={this.performSearch.bind(this)}
-            />
+            >
+              <i class="fa fa-search"></i>
+            </span>
           </div>
         ) : (
           <div class="btn-group float-right" style="margin-bottom:5px">
