@@ -14,6 +14,7 @@
 - Allows selection of columns for display.
 - Additional Column can be added on the fly, with custom transformer function
 - Selection of columns which are rendered as html through props `html`
+- Allows Sorting of Columns
 
 # Props
 
