@@ -1,19 +1,24 @@
 # Vue JS Datatable component.
-* Table Component for Vue js supporting server and client slide rendering with pagination and sorting
-* If URL is supplied as a prop, then the data is fetched from the url. Receives data as props too.
+
+- Table Component for Vue js supporting server and client slide rendering with pagination and sorting
+- If URL is supplied as a prop, then the data is fetched from the url. Receives data as props too.
+
 # Features
-* Server side search
-* Local In memory Searching (WIP)
-* Sort the Columns 
-* Supports custom heading through custom function.
-* Allows transformation of values through custom function.
-* Pagination
-* Allows selection of columns for display.
-* Additional Column can be added on the fly, with custom transformer function
-* Selection of columns which are rendered as html through props `html`
+
+- Server side search
+- Local In memory Searching (WIP)
+- Sort the Columns
+- Supports custom heading through custom function.
+- Allows transformation of values through custom function.
+- Pagination
+- Allows selection of columns for display.
+- Additional Column can be added on the fly, with custom transformer function
+- Selection of columns which are rendered as html through props `html`
 
 # Props
+
 The component accepts following props for further customization:
+
 ```js
     items: Array, //Items passed as prop for local side data
     headingTransformer: Function, // the transformer function if data in the heading needs some transformation before rendering
@@ -32,26 +37,33 @@ The component accepts following props for further customization:
     perPage: {
       type: Number,
       default: 10
-    }
+    },
+    columnSortOrder:Object
 ```
+
 # Usage
+
 import `vue-table` from "geeklearners-vue-table";
 
-register the component 
- ` components: { vTable }`
+register the component
+` components: { vTable }`
 
- ## Minimal Usage
+## Minimal Usage
 
- ```js
- <v-table :items="items">
- 
- </v-table>
+```js
+<v-table :items="items">
+
+</v-table>
 ```
+
 ## Customizing the table through props :
+
 ### Changing Columns Heading Label
+
 By default, the column name is used as it is received from the server. Heading can be customized by proving a custom function `headingTransformer` as prop to `vue-table`. `headingTransformer` passes the default heading to the call back provided as prop and the value can be customized as required.
 
-e.g. 
+e.g.
+
 ```js
 <template>
 <v-table :items="items" :headingTransformer="headingTransformer"/>
@@ -73,19 +85,21 @@ export default {
 }
 <script>
 ```
+
 ### Adding Extra Columns
+
 If some additional columns need to be added to the display, they can be added using the `additionalColumns` and `additionalColumnsTransformer` props.
 
 `additionalColumns` is just an array defining the columns to be added to the table.
 `additionalColumnsTransformer` is a function returning an Object containing column name as key and a callback function returning array of object as the value.
 
 ### Sorting Column Order
+
 `columnSortOrder` Sorts the columns display positioning.
 
 ```js
 :columnSortOrder="{name:1,address:2}"
 ```
-
 
 ```js
 <template>
@@ -127,8 +141,11 @@ export default {
 }
 <script>
 ```
-* Pls note that all the columns that need some sort of transformation need to be added to `html` prop's array.
-### Skipping some columns 
+
+- Pls note that all the columns that need some sort of transformation need to be added to `html` prop's array.
+
+### Skipping some columns
+
 if some columns need to be skipped during rendering, those could be specified using `except` prop to the `vue-table`
 
 ```js
@@ -136,16 +153,19 @@ if some columns need to be skipped during rendering, those could be specified us
 ```
 
 ### Transforming the value before rendering.
-The columns which need to go through some sort of customization before rendering can be achieved using `valueTransformer` props. its same like 
+
+The columns which need to go through some sort of customization before rendering can be achieved using `valueTransformer` props. its same like
 `additionalColumnsTransformer` but operates on the data and processes them before rendering.
 
 # This package fully supports server side pagination and searching integration. Just provide `url` props a url
+
 The data returned from the server is expected to return the data in following format:
 
 ![JsonFormat](./img/json_data_format.png)
+
 ## Advance Usage
 
-```js 
+```js
         <v-table
             :headingTransformer="headingTransformer"
             :valueTransformer="valueTransformer"
@@ -158,9 +178,10 @@ The data returned from the server is expected to return the data in following fo
           >
         </v-table>
 ```
+
 # Example Usage:
 
-```js 
+```js
 <template>
     <div>
         <v-table  :items="data" :except="['states']"/>
@@ -185,6 +206,5 @@ export default {
 }
 </script>
 ```
+
 # <a target="_blank" href="https://vuejstabledemo.firebaseapp.com/">Online Demo</a>
-
-

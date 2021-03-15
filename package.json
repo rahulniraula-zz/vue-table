@@ -1,6 +1,6 @@
 {
   "name": "geeklearners-vue-table",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "description": "Table Component for vue js",
   "main": "index.js",
   "scripts": {
