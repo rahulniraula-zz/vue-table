@@ -53,6 +53,9 @@ export default {
     rowCallback: {
       type: Function,
     },
+    http: {
+      required: true,
+    },
   },
   mounted: function () {
     this.externalFilter = {};
@@ -130,25 +133,20 @@ export default {
      * Fetch the data from the server and set it to internalItems
      */
     fetchData() {
-      let token = sessionStorage.getItem("token") || "";
-      const instance = axios.create({
-        headers: {
-          Authorization: `Bearer ${token}`.replace(/"/, ""),
-        },
-      });
-      instance({
-        url:
-          this.$props.url +
-          "?" +
-          (Object.keys(this.$props.params).length > 0
-            ? this.serialize(this.$props.params) + "&"
-            : "") +
-          this.serialize({
-            ...this.externalFilter,
-            q: this.query,
-            page: this.currentPage,
-          }),
-      })
+      this.$props
+        .http({
+          url:
+            this.$props.url +
+            "?" +
+            (Object.keys(this.$props.params).length > 0
+              ? this.serialize(this.$props.params) + "&"
+              : "") +
+            this.serialize({
+              ...this.externalFilter,
+              q: this.query,
+              page: this.currentPage,
+            }),
+        })
         .then((r) => {
           this.dataFromServer = r.data.data;
           this.dataFromServer ? (this.internalItems = r.data.data.data) : "";
