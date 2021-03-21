@@ -40,7 +40,7 @@ The component accepts following props for further customization:
       default: 10
     },
     columnSortOrder:Object,
-    http:Object //Custom Axios instance required to fetch data
+    http:Object //Custom Axios instance can be passed to fetch data
 ```
 
 # Usage

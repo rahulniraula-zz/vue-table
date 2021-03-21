@@ -54,7 +54,7 @@ export default {
       type: Function,
     },
     http: {
-      required: true,
+      required: false,
     },
   },
   mounted: function () {
@@ -133,20 +133,20 @@ export default {
      * Fetch the data from the server and set it to internalItems
      */
     fetchData() {
-      this.$props
-        .http({
-          url:
-            this.$props.url +
-            "?" +
-            (Object.keys(this.$props.params).length > 0
-              ? this.serialize(this.$props.params) + "&"
-              : "") +
-            this.serialize({
-              ...this.externalFilter,
-              q: this.query,
-              page: this.currentPage,
-            }),
-        })
+      let httpClient = this.$props.http ?? axios;
+      httpClient({
+        url:
+          this.$props.url +
+          "?" +
+          (Object.keys(this.$props.params).length > 0
+            ? this.serialize(this.$props.params) + "&"
+            : "") +
+          this.serialize({
+            ...this.externalFilter,
+            q: this.query,
+            page: this.currentPage,
+          }),
+      })
         .then((r) => {
           this.dataFromServer = r.data.data;
           this.dataFromServer ? (this.internalItems = r.data.data.data) : "";
@@ -427,7 +427,3 @@ export default {
   },
 };
 </script>
-
-
-
-
