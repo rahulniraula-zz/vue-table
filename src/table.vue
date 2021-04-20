@@ -53,6 +53,9 @@ export default {
     rowCallback: {
       type: Function,
     },
+    http: {
+      required: false,
+    },
   },
   mounted: function () {
     this.externalFilter = {};
@@ -130,13 +133,8 @@ export default {
      * Fetch the data from the server and set it to internalItems
      */
     fetchData() {
-      let token = sessionStorage.getItem("token") || "";
-      const instance = axios.create({
-        headers: {
-          Authorization: `Bearer ${token}`.replace(/"/, ""),
-        },
-      });
-      instance({
+      let httpClient = this.$props.http ?? axios;
+      httpClient({
         url:
           this.$props.url +
           "?" +
@@ -429,7 +427,3 @@ export default {
   },
 };
 </script>
-
-
-
-
