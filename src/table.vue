@@ -56,6 +56,11 @@ export default {
     http: {
       required: false,
     },
+    sn: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    },
   },
   mounted: function () {
     this.externalFilter = {};
@@ -102,12 +107,14 @@ export default {
      * Handler for server side pagiation
      */
     paginationClickHandler(page) {
+      console.log(page);
       this.externalFilter = {
         ...this.externalFilter,
         page: this.currentPage,
         q: this.query,
       };
       this.fetchData();
+      util.event.$emit("currentPage", this.currentPage);
     },
     /**
      * Local Search for items received through items props
@@ -347,6 +354,7 @@ export default {
           <table class={this.$props.tableClass}>
             <thead>
               <tr>
+                {this.$props.sn ? <th>SN</th> : null}
                 {this._cols.map((column) => {
                   return (
                     <th
@@ -379,6 +387,15 @@ export default {
                         : []
                     }
                   >
+                    {this.$props.sn &&
+                    this.dataFromServer &&
+                    this.dataFromServer.per_page ? (
+                      <td>
+                        {(this.currentPage - 1) * this.dataFromServer.per_page +
+                          i +
+                          1}
+                      </td>
+                    ) : null}
                     {this._cols.map((column, i) => {
                       return (
                         <td key={"column_" + i}>

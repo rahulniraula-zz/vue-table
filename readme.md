@@ -40,7 +40,12 @@ The component accepts following props for further customization:
       default: 10
     },
     columnSortOrder:Object,
-    http:Object //Custom Axios instance can be passed to fetch data
+    http:Object, //Custom Axios instance can be passed to fetch data
+    sn: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    }, //Specify whether SN field (Serial Number in the first Column) is required
 ```
 
 # Usage
