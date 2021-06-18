@@ -86,6 +86,10 @@ export default {
     } else {
       this.$set(this.$data, "internalItems", this.$props.items);
     }
+    util.event.$off("reload");
+    util.event.$on("reload", () => {
+      this.fetchData();
+    });
   },
   methods: {
     serialize(obj) {
