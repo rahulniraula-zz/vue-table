@@ -61,6 +61,11 @@ export default {
       required: false,
       default: () => true,
     },
+    showPageDropdown: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    },
   },
   mounted: function () {
     this.externalFilter = {};
@@ -228,6 +233,9 @@ export default {
         return obj[col];
       }
     },
+    navigateToPage() {
+      this.paginationClickHandler(this.currentPage);
+    },
   },
   computed: {
     /**
@@ -308,6 +316,13 @@ export default {
     },
   },
   render(h) {
+    const drop = () => {
+      let o = [];
+      for (let i = 1; i <= this.dataFromServer.last_page; i++) {
+        o.push(i);
+      }
+      return o;
+    };
     return (
       <div>
         {this.$props.url ? (
@@ -427,22 +442,41 @@ export default {
             </tbody>
           </table>
         )}
-        {this.dataFromServer["last_page"] ? (
-          <paginate
-            class="float-right"
-            pageCount={this.dataFromServer["last_page"]}
-            containerClass="pagination"
-            pageLinkClass="page-link"
-            margin-pages={2}
-            pageClass="page-item"
-            prev-text="Prev"
-            next-text="Next"
-            prev-link-class="page-link"
-            next-link-class="page-link"
-            click-handler={this.paginationClickHandler}
-            v-model={this.currentPage}
-          ></paginate>
-        ) : null}
+        <div class="row">
+          {this.$props.showPageDropdown &&
+          this.dataFromServer &&
+          this.dataFromServer.last_page ? (
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                v-model={this.currentPage}
+                vOn:change={this.navigateToPage}
+              >
+                {drop().map((i) => {
+                  return <option value={i}>Jump To Page {i}</option>;
+                })}
+              </select>
+            </div>
+          ) : null}
+          <div class={this.$props.showPageDropdown ? "col-md-6" : "col-md-12"}>
+            {this.dataFromServer["last_page"] ? (
+              <paginate
+                class="float-right"
+                pageCount={this.dataFromServer["last_page"]}
+                containerClass="pagination"
+                pageLinkClass="page-link"
+                margin-pages={2}
+                pageClass="page-item"
+                prev-text="Prev"
+                next-text="Next"
+                prev-link-class="page-link"
+                next-link-class="page-link"
+                click-handler={this.paginationClickHandler}
+                v-model={this.currentPage}
+              ></paginate>
+            ) : null}
+          </div>
+        </div>
       </div>
     );
   },

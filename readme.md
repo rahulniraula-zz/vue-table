@@ -46,6 +46,11 @@ The component accepts following props for further customization:
       required: false,
       default: () => true,
     }, //Specify whether SN field (Serial Number in the first Column) is required
+    showPageDropdown: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    }, //pagination enabled as dropdown
 ```
 
 # Usage
