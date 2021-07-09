@@ -71,8 +71,7 @@ register the component
 ## Customizing the table through props :
 
 ### Changing Columns Heading Label
-
-By default, the column name is used as it is received from the server. Heading can be customized by proving a custom function `headingTransformer` as prop to `vue-table`. `headingTransformer` passes the default heading to the call back provided as prop and the value can be customized as required.
+By default, the column name is used as it is received from the server. Heading can be customized by providing a custom function `headingTransformer` as prop to `vue-table`. `headingTransformer` passes a default heading to the call back provided as prop and the value can be customized as required.
 
 e.g.
 
@@ -102,7 +101,7 @@ export default {
 
 If some additional columns need to be added to the display, they can be added using the `additionalColumns` and `additionalColumnsTransformer` props.
 
-`additionalColumns` is just an array defining the columns to be added to the table.
+`additionalColumns` is an array defining the columns to be added to the table.
 `additionalColumnsTransformer` is a function returning an Object containing column name as key and a callback function returning array of object as the value.
 
 ### Sorting Column Order
@@ -153,25 +152,21 @@ export default {
 }
 <script>
 ```
-
-- Pls note that all the columns that need some sort of transformation need to be added to `html` prop's array.
-
-### Skipping some columns
-
-if some columns need to be skipped during rendering, those could be specified using `except` prop to the `vue-table`
+* Please note that all the columns that need some sort of transformation need to be added to `html` prop's array.
+### Skipping some columns 
+If some columns need to be skipped during rendering, those could be specified using `except` prop to the `vue-table`
 
 ```js
 <vue-table :items="items" :except="['id','updated_at','created_at']"/>
 ```
 
 ### Transforming the value before rendering.
-
-The columns which need to go through some sort of customization before rendering can be achieved using `valueTransformer` props. its same like
+The columns which need to go through some sort of customization before rendering can be achieved using `valueTransformer` props. It's the same as 
 `additionalColumnsTransformer` but operates on the data and processes them before rendering.
 
 # This package fully supports server side pagination and searching integration. Just provide `url` props a url
+The data returned from the server is expected to return the data in the following format:
 
-The data returned from the server is expected to return the data in following format:
 
 ![JsonFormat](./img/json_data_format.png)
 
